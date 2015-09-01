@@ -174,6 +174,7 @@
             this.EventsForToday.Name = "EventsForToday";
             this.EventsForToday.Size = new System.Drawing.Size(229, 212);
             this.EventsForToday.TabIndex = 2;
+            this.EventsForToday.SelectedIndexChanged += new System.EventHandler(this.EventsForToday_SelectedIndexChanged);
             // 
             // EventsLabel
             // 

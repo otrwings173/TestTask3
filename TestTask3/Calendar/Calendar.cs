@@ -28,6 +28,11 @@ namespace Calendar
             validEntries.Sort();
         }
 
+        public CalendarEntry GetDataAt(int index)
+        {
+            return validEntries[index];
+        }
+
         public void CreateNewRecord(string title, DateTime startDateTime, DateTime endDateTime)
         {
             CalendarEntry entry = new CalendarEntry(title, startDateTime, endDateTime);

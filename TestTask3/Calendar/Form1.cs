@@ -111,5 +111,20 @@ namespace Calendar
             }
             return true;
         }
+
+        private void EventsForToday_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int index = EventsForToday.SelectedIndex;
+
+            if (index < 0)
+                return;
+
+            CalendarEntry entry = calendar.GetDataAt(index);
+            TitleBox.Text = entry.Title;
+            StartDate.Value = entry.StartDate.Date;
+            StartTime.Text = entry.StartDate.ToString("HH:mm");
+            EndDate.Value = entry.EndDate.Date;
+            EndTime.Text = entry.EndDate.ToString("HH:mm");
+        }
     }
 }
