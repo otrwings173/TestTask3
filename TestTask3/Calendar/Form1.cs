@@ -14,10 +14,14 @@ namespace Calendar
     public partial class CalendarForm : Form
     {
         Calendar calendar;
+        Timer timer = new Timer();
+
         public CalendarForm()
         {
             InitializeComponent();
             calendar = new Calendar();
+            timer.Interval = 30000;
+            timer.Tick += TimerElapsedHandler;
         }
 
         private void Save_Click(object sender, EventArgs e)
@@ -32,12 +36,19 @@ namespace Calendar
             }
         }
 
+        private void TimerElapsedHandler(object sender, EventArgs e)
+        {
+            DoRemind();
+        }
+
         private void CalendarForm_Load(object sender, EventArgs e)
         {
             try
             {
                 calendar.LoadData();
                 ShowValidEvents();
+                SetReminders();
+                timer.Enabled = true;
             }
             catch (FileNotFoundException ex)
             {
@@ -71,10 +82,11 @@ namespace Calendar
         {
             DateTime startDateTime = Calendar.GetSelectedDateTime(StartDate.Value, StartTime.Value);
             DateTime endDateTime = Calendar.GetSelectedDateTime(EndDate.Value, EndTime.Value);
+            TimeSpan reminder = Reminders.GetReminder(RemindersBox.Text);
 
             if (Validate(-1, startDateTime, endDateTime))
             {
-                calendar.CreateNewRecord(TitleBox.Text, startDateTime, endDateTime);
+                calendar.CreateNewRecord(TitleBox.Text, startDateTime, endDateTime, reminder);
                 ShowValidEvents();
             }
         }
@@ -87,10 +99,11 @@ namespace Calendar
 
             DateTime startDateTime = Calendar.GetSelectedDateTime(StartDate.Value, StartTime.Value);
             DateTime endDateTime = Calendar.GetSelectedDateTime(EndDate.Value, EndTime.Value);
+            TimeSpan reminder = Reminders.GetReminder(RemindersBox.Text);
 
             if (Validate(index, startDateTime, endDateTime))
             {
-                calendar.ModifyRecordAt(index, TitleBox.Text, startDateTime, endDateTime);
+                calendar.ModifyRecordAt(index, TitleBox.Text, startDateTime, endDateTime, reminder);
                 ShowValidEvents();
             }
         }
@@ -125,6 +138,40 @@ namespace Calendar
             StartTime.Text = entry.StartDate.ToString("HH:mm");
             EndDate.Value = entry.EndDate.Date;
             EndTime.Text = entry.EndDate.ToString("HH:mm");
+            RemindersBox.Text = Reminders.GetTxtReminder(entry.Reminder);
+        }
+
+        private void SetReminders()
+        {
+            List<string> reminders = Reminders.GetTxtReminders();
+            foreach (string item in reminders)
+            {
+                RemindersBox.Items.Add(item);
+            }
+        }
+
+        private void DoRemind()
+        { 
+            DateTime nowTmp = DateTime.Now;
+            DateTime now = new DateTime(nowTmp.Year, nowTmp.Month, nowTmp.Day, nowTmp.Hour, nowTmp.Minute, 0);
+            StringBuilder sb = new StringBuilder();
+
+            foreach (CalendarEntry item in calendar)
+            {
+                bool isNotDefault = !(default(TimeSpan) == item.Reminder);
+                if (isNotDefault && !item.Reminded && item.StartDate.Subtract(item.Reminder) == now)
+                {
+                    sb.AppendLine(string.Format("In {0} - {1}", Reminders.GetTxtReminder(item.Reminder), item.Title));
+                    item.Reminded = true;
+                }
+            }
+            if (sb.Length != 0)
+                MessageBox.Show(sb.ToString(), "Reminder");
+        }
+
+        private void CalendarForm_Shown(object sender, EventArgs e)
+        {
+            DoRemind();
         }
     }
 }

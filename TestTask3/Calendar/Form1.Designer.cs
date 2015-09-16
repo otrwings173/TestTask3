@@ -30,8 +30,10 @@
         {
             this.StartDateLabel = new System.Windows.Forms.Label();
             this.CreateModify = new System.Windows.Forms.GroupBox();
+            this.RemindersBox = new System.Windows.Forms.ComboBox();
             this.TitleBox = new System.Windows.Forms.TextBox();
             this.TitleLabel = new System.Windows.Forms.Label();
+            this.RemindeTime = new System.Windows.Forms.Label();
             this.EndDate = new System.Windows.Forms.DateTimePicker();
             this.StartDate = new System.Windows.Forms.DateTimePicker();
             this.EndTime = new System.Windows.Forms.DateTimePicker();
@@ -59,8 +61,10 @@
             // 
             // CreateModify
             // 
+            this.CreateModify.Controls.Add(this.RemindersBox);
             this.CreateModify.Controls.Add(this.TitleBox);
             this.CreateModify.Controls.Add(this.TitleLabel);
+            this.CreateModify.Controls.Add(this.RemindeTime);
             this.CreateModify.Controls.Add(this.EndDate);
             this.CreateModify.Controls.Add(this.StartDate);
             this.CreateModify.Controls.Add(this.EndTime);
@@ -69,12 +73,20 @@
             this.CreateModify.Controls.Add(this.StartDateLabel);
             this.CreateModify.Controls.Add(this.StartTimeLabel);
             this.CreateModify.Controls.Add(this.EndDateLabel);
-            this.CreateModify.Location = new System.Drawing.Point(275, 12);
+            this.CreateModify.Location = new System.Drawing.Point(279, 12);
             this.CreateModify.Name = "CreateModify";
             this.CreateModify.Size = new System.Drawing.Size(317, 178);
             this.CreateModify.TabIndex = 1;
             this.CreateModify.TabStop = false;
             this.CreateModify.Text = "Create/Modify";
+            // 
+            // RemindersBox
+            // 
+            this.RemindersBox.FormattingEnabled = true;
+            this.RemindersBox.Location = new System.Drawing.Point(65, 148);
+            this.RemindersBox.Name = "RemindersBox";
+            this.RemindersBox.Size = new System.Drawing.Size(121, 21);
+            this.RemindersBox.TabIndex = 12;
             // 
             // TitleBox
             // 
@@ -91,6 +103,15 @@
             this.TitleLabel.Size = new System.Drawing.Size(27, 13);
             this.TitleLabel.TabIndex = 10;
             this.TitleLabel.Text = "Title";
+            // 
+            // RemindeTime
+            // 
+            this.RemindeTime.AutoSize = true;
+            this.RemindeTime.Location = new System.Drawing.Point(6, 151);
+            this.RemindeTime.Name = "RemindeTime";
+            this.RemindeTime.Size = new System.Drawing.Size(52, 13);
+            this.RemindeTime.TabIndex = 1;
+            this.RemindeTime.Text = "Reminder";
             // 
             // EndDate
             // 
@@ -159,7 +180,7 @@
             // 
             // Save
             // 
-            this.Save.Location = new System.Drawing.Point(395, 238);
+            this.Save.Location = new System.Drawing.Point(399, 238);
             this.Save.Name = "Save";
             this.Save.Size = new System.Drawing.Size(75, 23);
             this.Save.TabIndex = 9;
@@ -187,7 +208,7 @@
             // 
             // Delete
             // 
-            this.Delete.Location = new System.Drawing.Point(507, 196);
+            this.Delete.Location = new System.Drawing.Point(511, 196);
             this.Delete.Name = "Delete";
             this.Delete.Size = new System.Drawing.Size(75, 23);
             this.Delete.TabIndex = 4;
@@ -197,7 +218,7 @@
             // 
             // Create
             // 
-            this.Create.Location = new System.Drawing.Point(284, 196);
+            this.Create.Location = new System.Drawing.Point(288, 196);
             this.Create.Name = "Create";
             this.Create.Size = new System.Drawing.Size(75, 23);
             this.Create.TabIndex = 12;
@@ -207,7 +228,7 @@
             // 
             // Modify
             // 
-            this.Modify.Location = new System.Drawing.Point(395, 196);
+            this.Modify.Location = new System.Drawing.Point(399, 196);
             this.Modify.Name = "Modify";
             this.Modify.Size = new System.Drawing.Size(75, 23);
             this.Modify.TabIndex = 13;
@@ -219,7 +240,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(619, 273);
+            this.ClientSize = new System.Drawing.Size(619, 285);
             this.Controls.Add(this.Modify);
             this.Controls.Add(this.Create);
             this.Controls.Add(this.Delete);
@@ -230,6 +251,7 @@
             this.Name = "CalendarForm";
             this.Text = "Calendar";
             this.Load += new System.EventHandler(this.CalendarForm_Load);
+            this.Shown += new System.EventHandler(this.CalendarForm_Shown);
             this.CreateModify.ResumeLayout(false);
             this.CreateModify.PerformLayout();
             this.ResumeLayout(false);
@@ -256,6 +278,8 @@
         private System.Windows.Forms.Button Delete;
         private System.Windows.Forms.Button Create;
         private System.Windows.Forms.Button Modify;
+        private System.Windows.Forms.Label RemindeTime;
+        private System.Windows.Forms.ComboBox RemindersBox;
     }
 }
 

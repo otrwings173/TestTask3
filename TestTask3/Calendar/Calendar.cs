@@ -20,11 +20,16 @@ namespace Calendar
                 validEntries.RemoveAt(index);
         }
 
-        public void ModifyRecordAt(int index, string title, DateTime startDateTime, DateTime endDateTime)
+        public void ModifyRecordAt(int index, string title, DateTime startDateTime, DateTime endDateTime, TimeSpan reminder)
         {
             validEntries[index].Title = title;
+            if (validEntries[index].StartDate != startDateTime)
+            {
+                validEntries[index].Reminded = false;
+            }
             validEntries[index].StartDate = startDateTime;
             validEntries[index].EndDate = endDateTime;
+            validEntries[index].Reminder = reminder;
             validEntries.Sort();
         }
 
@@ -33,9 +38,9 @@ namespace Calendar
             return validEntries[index];
         }
 
-        public void CreateNewRecord(string title, DateTime startDateTime, DateTime endDateTime)
+        public void CreateNewRecord(string title, DateTime startDateTime, DateTime endDateTime, TimeSpan reminder)
         {
-            CalendarEntry entry = new CalendarEntry(title, startDateTime, endDateTime);
+            CalendarEntry entry = new CalendarEntry(title, startDateTime, endDateTime, reminder);
             validEntries.Add(entry);
             validEntries.Sort();
         }
@@ -87,11 +92,13 @@ namespace Calendar
             string pattern = "dd-MM-yyyy HH:mm";
             DateTime startDateTime;
             DateTime endDateTime;
+            TimeSpan reminder;
 
             if ((DateTime.TryParseExact(splitted[1], pattern, null, DateTimeStyles.None, out startDateTime)) && (DateTime.TryParseExact(splitted[2], pattern, null, DateTimeStyles.None, out endDateTime)))
             {
                 string title = splitted[0];
-                entry = new CalendarEntry(title, startDateTime, endDateTime);
+                reminder = Reminders.GetReminder(splitted[3]);
+                entry = new CalendarEntry(title, startDateTime, endDateTime, reminder);
             }
             return entry;
         }

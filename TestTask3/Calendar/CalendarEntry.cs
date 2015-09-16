@@ -20,11 +20,19 @@ namespace Calendar
         public DateTime EndDate
         { get; set; }
 
-        public CalendarEntry(string title, DateTime StartDate, DateTime EndDate)
+        public TimeSpan Reminder
+        { get; set; }
+
+        public bool Reminded
+        { get; set; }
+
+        public CalendarEntry(string title, DateTime startDate, DateTime endDate, TimeSpan reminder)
         {
             Title = title;
-            this.StartDate = StartDate;
-            this.EndDate = EndDate;
+            StartDate = startDate;
+            EndDate = endDate;
+            Reminder = reminder;
+            Reminded = false;
         }
 
         static public string ValidateTitle(string title)
@@ -101,7 +109,8 @@ namespace Calendar
             string startTimeTxt = StartDate.ToString("HH:mm");
             string endDateTxt = EndDate.ToString("dd-MM-yyyy");
             string endTimeTxt = EndDate.ToString("HH:mm");
-            string fileLine = Title + "%" + startDateTxt + " " + startTimeTxt + "%" + endDateTxt + " " + endTimeTxt;
+            string reminderTxt = Reminders.GetTxtReminder(Reminder);
+            string fileLine = Title + "%" + startDateTxt + " " + startTimeTxt + "%" + endDateTxt + " " + endTimeTxt + "%" + reminderTxt;
             return fileLine;
         }
 
